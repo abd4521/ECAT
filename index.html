@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ECAT Test</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+        h1 {
+            color: #fff;
+        }
+        #timer {
+            position: fixed;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            padding: 10px 20px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 5px;
+            z-index: 1000;
+        }
+        #ecatTest {
+            background: #fff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            max-width: 800px;
+            width: 100%;
+            margin-top: 60px;
+        }
+        .question {
+            margin-bottom: 25px;
+            padding: 15px;
+            border-radius: 10px;
+            background: #f9f9f9;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .options label {
+            display: block;
+            margin: 8px 0;
+        }
+        .submit-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            color: #fff;
+            text-align: center;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .submit-btn:disabled {
+            background: #aaa;
+            cursor: not-allowed;
+        }
+        #scoreDisplay {
+            margin-top: 20px;
+            color: #fff;
+            text-align: center;
+            font-size: 20px;
+        }
+        .nav-btn {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.3s ease, transform 0.2s;
+}
+
+.nav-btn:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+}
+
+.nav-btn:not(:disabled) {
+    background: linear-gradient(135deg, #6a11cb, #2575fc);
+    color: white;
+}
+
+.nav-btn:not(:disabled):hover {
+    background: linear-gradient(135deg, #5a0fbf, #1f66d3);
+    transform: scale(1.05);
+}
+#questionNav {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+}
+
+.nav-circle {
+    width: 25px;
+    height: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    background: #ddd;
+    color: #333;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.nav-circle:hover {
+    background: #6a11cb;
+    color: #fff;
+}
+.nav-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.nav-buttons button {
+    padding: 10px 20px;
+    font-size: 14px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background: #6a11cb;
+    color: white;
+    transition: 0.3s;
+}
+
+.nav-buttons button:hover {
+    background: #2575fc;
+}
+
+.nav-buttons button:disabled {
+    background: #aaa;
+    cursor: not-allowed;
+}
+
+
+    </style>
+    <script>
+        MathJax = {
+            tex: {
+                inlineMath: [['\\(', '\\)']],
+                displayMath: [['\\[', '\\]']]
+            },
+            startup: {
+                typeset: false
+            }
+        };
+    </script>
+    <script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+    <div id="timer">Time Left: 100:00</div>
+    <h1>ECAT Test</h1>
+    <form id="ecatTest">
+        <div id="questionsContainer"></div>
+        <div class="nav-buttons">
+            <button type="button" id="prevBtn" onclick="prevQuestion()">Previous</button>
+            <button type="button" id="nextBtn" onclick="nextQuestion()">Next</button>
+        </div>
+        
+        
+        <div id="questionNav"></div>
+
+        <button type="button" class="submit-btn" onclick="calculateScore()">Submit</button>
+    </form>
+    <h2 id="scoreDisplay"></h2>
+
+    <script src="physics.js"></script>
+    <script src="chemistry.js"></script>
+    <script src="math.js"></script>
+    <script src="english.js"></script>
+
+    <script>
+        let allQuestions = [];
+        let timeLeft = 100 * 60; 
+
+        function shuffleArray(array) {
+            return array.sort(() => Math.random() - 0.5);
+        }
+
+        function selectRandomQuestions() {
+    let physics = shuffleArray(physicsQuestions).slice(0, 30).map(q => ({ ...q, subject: "Physics" }));
+    let chemistry = shuffleArray(chemistryQuestions).slice(0, 30).map(q => ({ ...q, subject: "Chemistry" }));
+    let math = shuffleArray(mathQuestions).slice(0, 30).map(q => ({ ...q, subject: "Math" }));
+    let english = shuffleArray(englishQuestions).slice(0, 10).map(q => ({ ...q, subject: "English" }));
+
+    allQuestions = physics.concat(chemistry, math, english);
+}
+let currentQuestionIndex = 0; 
+
+
+
+let userAnswers = {}; 
+
+function renderQuestion(index) {
+    const questionsContainer = document.getElementById('questionsContainer');
+    const question = allQuestions[index];
+
+    questionsContainer.innerHTML = `
+        <div class="question">
+            <p>${index + 1}. ${question.question}</p>
+            <div class="options">
+                <label><input type="radio" name="q${index}" value="A" ${userAnswers[index] === "A" ? "checked" : ""}> ${question.options.A}</label>
+                <label><input type="radio" name="q${index}" value="B" ${userAnswers[index] === "B" ? "checked" : ""}> ${question.options.B}</label>
+                <label><input type="radio" name="q${index}" value="C" ${userAnswers[index] === "C" ? "checked" : ""}> ${question.options.C}</label>
+                <label><input type="radio" name="q${index}" value="D" ${userAnswers[index] === "D" ? "checked" : ""}> ${question.options.D}</label>
+            </div>
+        </div>
+    `;
+
+    updateNavigation();
+    
+   
+    if (typeof MathJax !== "undefined" && MathJax.typesetPromise) {
+        MathJax.typesetPromise();
+    }
+
+    
+    document.querySelectorAll(`input[name="q${index}"]`).forEach(input => {
+        input.addEventListener("change", function() {
+            userAnswers[index] = this.value; 
+            updateNavigation(); 
+        });
+    });
+}
+
+r
+function renderNavigation() {
+    const navContainer = document.getElementById('questionNav');
+    navContainer.innerHTML = "";
+
+    allQuestions.forEach((_, index) => {
+        const navItem = document.createElement("div");
+        navItem.classList.add("nav-circle");
+        navItem.innerText = index + 1;
+
+        navItem.onclick = () => {
+            currentQuestionIndex = index;
+            renderQuestion(index);
+        };
+
+        navContainer.appendChild(navItem);
+    });
+
+    updateNavigation();
+}
+
+
+function updateNavigation() {
+    const navItems = document.querySelectorAll(".nav-circle");
+    
+    navItems.forEach((item, index) => {
+        if (index === currentQuestionIndex) {
+            item.style.background = "#2575fc"; 
+            item.style.color = "#fff";
+        } else if (userAnswers[index]) {
+            item.style.background = "#28a745"; 
+            item.style.color = "#fff";
+        } else {
+            item.style.background = "#ddd"; 
+            item.style.color = "#333";
+        }
+    });
+}
+
+
+        
+
+        function loadQuestions() {
+    selectRandomQuestions();
+    const questionsContainer = document.getElementById('questionsContainer');
+    questionsContainer.innerHTML = ''; 
+
+    allQuestions.forEach((question, index) => {
+        const questionDiv = document.createElement('div');
+        questionDiv.className = 'question';
+        questionDiv.id = `question-${index}`;
+        questionDiv.style.display = index === 0 ? 'block' : 'none'; 
+
+        questionDiv.innerHTML = `
+            <p>${index + 1}. ${question.question}</p>
+            <div class="options">
+                <label><input type="radio" name="q${index}" value="A"> ${question.options.A}</label>
+                <label><input type="radio" name="q${index}" value="B"> ${question.options.B}</label>
+                <label><input type="radio" name="q${index}" value="C"> ${question.options.C}</label>
+                <label><input type="radio" name="q${index}" value="D"> ${question.options.D}</label>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-top: 10px;">
+                <button type="button" class="nav-btn" onclick="prevQuestion(${index})" ${index === 0 ? 'disabled' : ''}>Previous</button>
+                <button type="button" class="nav-btn" onclick="nextQuestion(${index})" ${index === allQuestions.length - 1 ? 'disabled' : ''}>Next</button>
+            </div>
+        `;
+
+        questionsContainer.appendChild(questionDiv);
+    
+        selectRandomQuestions();
+    renderQuestion(currentQuestionIndex);
+    renderNavigation();
+    });
+
+    if (typeof MathJax !== 'undefined' && MathJax.typesetPromise) {
+        MathJax.typesetPromise();
+    }
+}
+
+
+function prevQuestion(index) {
+    document.getElementById(`question-${index}`).style.display = 'none';
+    document.getElementById(`question-${index - 1}`).style.display = 'block';
+}
+
+
+function nextQuestion(index) {
+    document.getElementById(`question-${index}`).style.display = 'none';
+    document.getElementById(`question-${index + 1}`).style.display = 'block';
+}
+
+
+function calculateScore() {
+    let score = 0;
+    let subjectScores = {
+        Physics: 0,
+        Chemistry: 0,
+        Math: 0,
+        English: 0
+    };
+
+    allQuestions.forEach((question, index) => {
+        const selectedOption = userAnswers[index]; 
+
+        if (selectedOption) {
+            if (selectedOption === question.answer) {
+                score += 4; 
+                subjectScores[question.subject] += 4; 
+            } else {
+                score -= 1; 
+                subjectScores[question.subject] -= 1;
+            }
+        }
+    });
+
+   
+    let percentage = (score / (allQuestions.length * 4)) * 100;
+
+  
+    document.getElementById('scoreDisplay').innerHTML = `
+        <p>Your Total Score: ${score} / ${allQuestions.length * 4} (${percentage.toFixed(2)}%)</p>
+        <p>Physics Score: ${subjectScores.Physics} / 120</p>
+        <p>Chemistry Score: ${subjectScores.Chemistry} / 120</p>
+        <p>Math Score: ${subjectScores.Math} / 120</p>
+        <p>English Score: ${subjectScores.English} / 40</p>
+    `;
+
+  
+    document.querySelector('.submit-btn').disabled = true;
+}
+
+
+
+        function updateTimer() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            document.getElementById('timer').innerText = `Time Left: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+
+            if (timeLeft > 0) {
+                timeLeft--;
+                setTimeout(updateTimer, 1000);
+            } else {
+                document.querySelector('.submit-btn').disabled = true;
+                calculateScore();
+                alert("Time's up! Your test has been submitted.");
+            }
+        }
+
+        window.onload = () => {
+            loadQuestions();
+            updateTimer();
+        };
+
+
+function prevQuestion() {
+    if (currentQuestionIndex > 0) {
+        currentQuestionIndex--;
+        renderQuestion(currentQuestionIndex);
+    }
+    updateNavigation();
+    updateButtons();
+}
+
+function nextQuestion() {
+    if (currentQuestionIndex < allQuestions.length - 1) {
+        currentQuestionIndex++;
+        renderQuestion(currentQuestionIndex);
+    }
+    updateNavigation();
+    updateButtons();
+}
+
+
+function updateButtons() {
+    document.getElementById('prevBtn').disabled = currentQuestionIndex === 0;
+    document.getElementById('nextBtn').disabled = currentQuestionIndex === allQuestions.length - 1;
+}
+
+
+window.onload = () => {
+    loadQuestions();
+    updateTimer();
+    updateButtons();
+};
+
+
+    </script>
+</body>
+</html>
