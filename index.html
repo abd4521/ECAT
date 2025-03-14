@@ -196,13 +196,13 @@
             return array.sort(() => Math.random() - 0.5);
         }
 
-        function selectRandomQuestions() {
-    let physics = shuffleArray(physicsQuestions).slice(0, 30).map(q => ({ ...q, subject: "Physics" }));
-    let chemistry = shuffleArray(chemistryQuestions).slice(0, 30).map(q => ({ ...q, subject: "Chemistry" }));
-    let math = shuffleArray(mathQuestions).slice(0, 30).map(q => ({ ...q, subject: "Math" }));
-    let english = shuffleArray(englishQuestions).slice(0, 10).map(q => ({ ...q, subject: "English" }));
+function selectRandomQuestions() {
+    let physics = shuffleArray([...physicsQuestions]).slice(0, 30).map(q => ({ ...q, subject: "Physics" }));
+    let chemistry = shuffleArray([...chemistryQuestions]).slice(0, 30).map(q => ({ ...q, subject: "Chemistry" }));
+    let math = shuffleArray([...mathQuestions]).slice(0, 30).map(q => ({ ...q, subject: "Math" }));
+    let english = shuffleArray([...englishQuestions]).slice(0, 10).map(q => ({ ...q, subject: "English" }));
 
-    allQuestions = physics.concat(chemistry, math, english);
+    allQuestions = [...physics, ...chemistry, ...math, ...english]; // Keeps subject order
 }
 let currentQuestionIndex = 0; 
 
