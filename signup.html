@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Signup</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    :root {
+      --primary-color: #4a90e2; /* Soft Blue */
+      --secondary-color: #f8f9fa; /* Light Gray */
+      --accent-color: #ff6b6b; /* Coral */
+      --background-color: #ffffff; /* White */
+      --text-color: #333333; /* Dark Gray */
+      --white: #ffffff;
+      --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: var(--background-color);
+    }
+
+    .container {
+      width: 400px;
+      background: var(--white);
+      border-radius: 15px;
+      box-shadow: var(--shadow);
+      padding: 30px;
+      text-align: center;
+    }
+
+    h2 {
+      margin-bottom: 10px;
+      color: var(--text-color);
+    }
+
+    p {
+      color: var(--text-color);
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: 1px solid #ddd;
+      border-radius: 25px;
+      outline: none;
+      background-color: var(--secondary-color);
+      color: var(--text-color);
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+    input:focus {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 8px rgba(74, 144, 226, 0.3);
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background: var(--primary-color);
+      border: none;
+      color: var(--white);
+      border-radius: 25px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+      transition: background 0.3s ease-in-out;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background: var(--accent-color);
+    }
+
+    .toggle-btn {
+      background: none;
+      color: var(--primary-color);
+      font-size: 14px;
+      cursor: pointer;
+      border: none;
+      margin-top: 10px;
+      transition: color 0.3s;
+    }
+
+    .toggle-btn:hover {
+      color: var(--accent-color);
+    }
+  </style>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+    // Firebase Configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyDjbEkfu8fJmPTDQ8xksGehPday9lrcSrg",
+      authDomain: "abdullah-bb8ab.firebaseapp.com",
+      projectId: "abdullah-bb8ab",
+      storageBucket: "abdullah-bb8ab.appspot.com",
+      messagingSenderId: "286504008164",
+      appId: "1:286504008164:web:8642bc9d56f36393052ff1"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    // Redirect if already logged in
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        window.location.href = "index.html"; // Redirect to main page
+      }
+    });
+
+    // Signup Function
+    document.getElementById("signup-btn").addEventListener("click", (e) => {
+      e.preventDefault(); // Prevent form submission
+      const email = document.getElementById("signup-email").value;
+      const password = document.getElementById("signup-password").value;
+
+      createUserWithEmailAndPassword(auth, email, password)
+        .then(() => {
+          window.location.href = "index.html"; // Redirect to main page
+        })
+        .catch((error) => {
+          alert(error.message); // Show error message
+        });
+    });
+  </script>
+</head>
+<body>
+  <div class="container">
+    <h2>Create an Account</h2>
+    <p>Sign up to continue.</p>
+    <input type="email" id="signup-email" placeholder="Email" required>
+    <input type="password" id="signup-password" placeholder="Password" required>
+    <button id="signup-btn">Sign Up</button>
+    <p>Already have an account? <a href="login.html" class="toggle-btn">Login</a></p>
+  </div>
+</body>
+</html>
