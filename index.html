@@ -301,7 +301,7 @@ function updateButtons() {
     document.getElementById('prevBtn').disabled = currentQuestionIndex === 0;
     document.getElementById('nextBtn').disabled = currentQuestionIndex === allQuestions.length - 1;
 }
-function calculateScore() {
+        function calculateScore() {
   let score = 0;
   let subjectScores = {
     Physics: 0,
@@ -338,18 +338,16 @@ function calculateScore() {
 
   // Save score to Firebase
   saveScore(score, subjectScores);
-
-
-    document.getElementById('scoreDisplay').innerHTML = `
-        <p>Your Total Score: ${score} / ${allQuestions.length * 4} (${percentage.toFixed(2)}%)</p>
-        <p>Physics Score: ${subjectScores.Physics} / 120</p>
-        <p>Chemistry Score: ${subjectScores.Chemistry} / 120</p>
-        <p>Math Score: ${subjectScores.Math} / 120</p>
-        <p>English Score: ${subjectScores.English} / 40</p>
-    `;
-
-    document.querySelector('.submit-btn').disabled = true;
 }
+        document.getElementById('viewScoresBtn').addEventListener('click', viewPreviousScores);
+
+  
+
+
+
+
+
+ 
 
 function updateTimer() {
     const minutes = Math.floor(timeLeft / 60);
