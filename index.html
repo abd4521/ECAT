@@ -2,161 +2,231 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="ECAT Test - Practice for your entrance exam">
-    <meta name="keywords" content="ECAT, Test, Exam, Practice, Physics, Chemistry, Math, English">
-    <meta name="author" content="Your Name">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ECAT Test</title>
+    <title>ECAT Test Portal</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
-  --primary-color: #4a90e2; /* Soft Blue */
-  --secondary-color: #f8f9fa; /* Light Gray */
-  --accent-color: #ff6b6b; /* Coral */
-  --background-color: #ffffff; /* White */
-  --text-color: #333333; /* Dark Gray */
-  --white: #ffffff;
-  --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
+            --primary-color: #4a90e2;
+            --secondary-color: #f8f9fa;
+            --accent-color: #ff6b6b;
+            --background-color: #ffffff;
+            --text-color: #333333;
+            --white: #ffffff;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
 
-body {
-  font-family: 'Poppins', sans-serif;
-  margin: 0;
-  padding: 0;
-  background-color: var(--background-color);
-  color: var(--text-color);
-  line-height: 1.6;
-}
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
 
-#timer {
-  font-size: 1.2rem;
-  font-weight: bold;
-  text-align: right;
-  margin: 20px;
-  color: var(--primary-color);
-}
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
 
-h1 {
-  text-align: center;
-  color: var(--primary-color);
-  margin-bottom: 20px;
-}
+        #timer {
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-align: right;
+            margin: 20px;
+            color: var(--primary-color);
+        }
 
-.question {
-  margin-bottom: 20px;
-  padding: 20px;
-  background-color: var(--secondary-color);
-  border-radius: 10px;
-  box-shadow: var(--shadow);
-}
+        h1, h2, h3 {
+            color: var(--primary-color);
+            text-align: center;
+        }
 
-.options label {
-  display: block;
-  margin: 10px 0;
-  font-size: 1rem;
-}
+        .test-selection {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin: 30px auto;
+            max-width: 500px;
+        }
 
-.nav-buttons {
-  display: flex;
-  justify-content: space-between;
-  margin: 20px 0;
-}
+        .test-btn {
+            padding: 15px;
+            background-color: var(--primary-color);
+            color: var(--white);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s, transform 0.3s;
+            text-align: center;
+        }
 
-.nav-buttons button {
-  padding: 10px 20px;
-  background-color: var(--primary-color);
-  color: var(--white);
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 1rem;
-  transition: background-color 0.3s, transform 0.3s;
-}
+        .test-btn:hover {
+            background-color: var(--accent-color);
+            transform: translateY(-2px);
+        }
 
-.nav-buttons button:hover {
-  background-color: var(--accent-color);
-  transform: translateY(-2px);
-}
+        .question {
+            margin-bottom: 20px;
+            padding: 20px;
+            background-color: var(--secondary-color);
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+        }
 
-.nav-buttons button:disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
-}
+        .options label {
+            display: block;
+            margin: 10px 0;
+            font-size: 1rem;
+        }
 
-.submit-btn {
-  display: block;
-  margin: 20px auto;
-  padding: 10px 20px;
-  background-color: var(--accent-color);
-  color: var(--white);
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 1rem;
-  transition: background-color 0.3s, transform 0.3s;
-}
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin: 20px 0;
+        }
 
-.submit-btn:hover {
-  background-color: var(--primary-color);
-  transform: translateY(-2px);
-}
+        .nav-buttons button {
+            padding: 10px 20px;
+            background-color: var(--primary-color);
+            color: var(--white);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s, transform 0.3s;
+        }
 
-#questionNav {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
-  margin: 20px 0;
-}
+        .nav-buttons button:hover {
+            background-color: var(--accent-color);
+            transform: translateY(-2px);
+        }
 
-.nav-circle {
-  width: 30px;
-  height: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: var(--secondary-color);
-  border-radius: 50%;
-  cursor: pointer;
-  font-size: 0.9rem;
-  transition: background-color 0.3s, color 0.3s;
-}
+        .nav-buttons button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
 
-.nav-circle.active {
-  background-color: var(--primary-color);
-  color: var(--white);
-}
+        .submit-btn {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: var(--accent-color);
+            color: var(--white);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s, transform 0.3s;
+        }
 
-.nav-circle.answered {
-  background-color: var(--accent-color);
-  color: var(--white);
-}
+        .submit-btn:hover {
+            background-color: var(--primary-color);
+            transform: translateY(-2px);
+        }
 
-#scoreDisplay {
-  text-align: center;
-  margin-top: 20px;
-  font-size: 1.2rem;
-  color: var(--text-color);
-}
+        #questionNav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin: 20px 0;
+        }
 
-#viewScoresBtn {
-  display: block;
-  margin: 20px auto;
-  padding: 10px 20px;
-  background-color: var(--primary-color);
-  color: var(--white);
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 1rem;
-  transition: background-color 0.3s, transform 0.3s;
-}
+        .nav-circle {
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--secondary-color);
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background-color 0.3s, color 0.3s;
+        }
 
-#viewScoresBtn:hover {
-  background-color: var(--accent-color);
-  transform: translateY(-2px);
-}
+        .nav-circle.active {
+            background-color: var(--primary-color);
+            color: var(--white);
+        }
+
+        .nav-circle.answered {
+            background-color: var(--accent-color);
+            color: var(--white);
+        }
+
+        #scoreDisplay {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 1.2rem;
+            color: var(--text-color);
+        }
+
+        #viewScoresBtn, #backToTestsBtn {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: var(--primary-color);
+            color: var(--white);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        #viewScoresBtn:hover, #backToTestsBtn:hover {
+            background-color: var(--accent-color);
+            transform: translateY(-2px);
+        }
+
+        .user-info {
+            text-align: right;
+            padding: 10px 20px;
+            background-color: var(--secondary-color);
+        }
+
+        .logout-btn {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        .scores-container {
+            background-color: var(--secondary-color);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        .score-item {
+            margin-bottom: 15px;
+            padding: 15px;
+            background-color: var(--white);
+            border-radius: 5px;
+            box-shadow: var(--shadow);
+        }
+
+        @media (max-width: 768px) {
+            .test-selection {
+                width: 90%;
+            }
+            
+            .question {
+                padding: 15px;
+            }
+            
+            .options label {
+                margin: 8px 0;
+            }
+        }
     </style>
     <script>
         MathJax = {
@@ -172,270 +242,105 @@ h1 {
     <script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 <body>
-    <div id="timer">Time Left: 100:00</div>
-    <h1>ECAT Test</h1>
-    <button id="viewScoresBtn" onclick="viewPreviousScores()">View Previous Scores</button>
-<div id="previousScores"></div>
-    <form id="ecatTest">
-        <div id="questionsContainer"></div>
-        <div class="nav-buttons">
-            <button type="button" id="prevBtn" onclick="prevQuestion()">Previous</button>
-            <button type="button" id="nextBtn" onclick="nextQuestion()">Next</button>
+    <div class="user-info">
+        Welcome, <span id="userEmail"></span>
+        <button class="logout-btn" onclick="logout()">Logout</button>
+    </div>
+    
+    <div class="container">
+        <div id="testSelection" class="test-selection">
+            <h2>Select Test Type</h2>
+            <button class="test-btn" onclick="startTest('physics')">Physics Test (30 MCQs)</button>
+            <button class="test-btn" onclick="startTest('chemistry')">Chemistry Test (30 MCQs)</button>
+            <button class="test-btn" onclick="startTest('math')">Math Test (30 MCQs)</button>
+            <button class="test-btn" onclick="startTest('english')">English Test (10 MCQs)</button>
+            <button class="test-btn" onclick="startTest('complete')">Complete ECAT Test (100 MCQs)</button>
+            <button id="viewScoresBtn" onclick="viewPreviousScores()">View Previous Scores</button>
         </div>
-        
-        
-        <div id="questionNav"></div>
 
-        <button type="button" class="submit-btn" onclick="calculateScore()">Submit</button>
-    </form>
-    <h2 id="scoreDisplay"></h2>
+        <div id="testContainer" style="display: none;">
+            <div id="timer">Time Left: 00:00:00</div>
+            <h1 id="testTitle">ECAT Test</h1>
+            
+            <form id="ecatTest">
+                <div id="questionsContainer"></div>
+                <div class="nav-buttons">
+                    <button type="button" id="prevBtn" onclick="prevQuestion()">Previous</button>
+                    <button type="button" id="nextBtn" onclick="nextQuestion()">Next</button>
+                </div>
+                
+                <div id="questionNav"></div>
 
+                <button type="button" class="submit-btn" onclick="calculateScore()">Submit</button>
+            </form>
+            
+            <button id="backToTestsBtn" onclick="backToTests()">Back to Test Selection</button>
+            <div id="scoreDisplay"></div>
+            <div id="previousScores"></div>
+        </div>
+        <!-- Add this to your test page HTML -->
+<div id="testSelection" class="test-selection" style="display: none;">
+    <h2>Test Options</h2>
+    <button class="test-btn" onclick="startTest('physics')">Physics</button>
+    <button class="test-btn" onclick="startTest('chemistry')">Chemistry</button>
+    <button class="test-btn" onclick="startTest('math')">Math</button>
+    <button class="test-btn" onclick="startTest('english')">English</button>
+    <button class="test-btn" onclick="startTest('complete')">Complete Test</button>
+</div>
+
+<div id="testContainer"></div>
+
+<script>
+// Modified startTest function
+function startTest(testType) {
+    // Hide test selection menu
+    document.getElementById('testSelection').style.display = 'none';
+    
+    // Load the selected test
+    currentTestType = testType;
+    selectQuestions(testType);
+    renderQuestion(0);
+    renderNavigation();
+    updateButtons();
+    
+    // Set up timer based on test type
+    const testTimes = {
+        'physics': 30 * 60,
+        'chemistry': 30 * 60,
+        'math': 30 * 60,
+        'english': 10 * 60,
+        'complete': 100 * 60
+    };
+    timeLeft = testTimes[testType];
+    startTimer();
+}
+
+// On page load
+document.addEventListener('DOMContentLoaded', function() {
+    // Check for stored test type
+    const testType = sessionStorage.getItem('ecatTestType');
+    
+    if (testType) {
+        // Clear the stored value
+        sessionStorage.removeItem('ecatTestType');
+        
+        // Start the selected test immediately
+        startTest(testType);
+    } else {
+        // Show test selection menu
+        document.getElementById('testSelection').style.display = 'block';
+    }
+});
+</script>
+    </div>
+
+    <!-- Include question bank files -->
     <script src="physics.js"></script>
     <script src="chemistry.js"></script>
     <script src="math.js"></script>
     <script src="english.js"></script>
-
-    <script>
-       let allQuestions = [];
-let currentQuestionIndex = 0;
-let userAnswers = {};
-let timeLeft = 100 * 60;
-
-function shuffleArray(array) {
-    return array.sort(() => Math.random() - 0.5);
-}
-
-function selectRandomQuestions() {
-    let physics = shuffleArray(physicsQuestions).slice(0, 30).map(q => ({ ...q, subject: "Physics" }));
-    let chemistry = shuffleArray(chemistryQuestions).slice(0, 30).map(q => ({ ...q, subject: "Chemistry" }));
-    let math = shuffleArray(mathQuestions).slice(0, 30).map(q => ({ ...q, subject: "Math" }));
-    let english = shuffleArray(englishQuestions).slice(0, 10).map(q => ({ ...q, subject: "English" }));
-
-    allQuestions = physics.concat(chemistry, math, english);
-}
-
-function renderQuestion(index) {
-    const questionsContainer = document.getElementById('questionsContainer');
-    const question = allQuestions[index];
-
-    questionsContainer.innerHTML = `
-        <div class="question">
-            <p>${index + 1}. ${question.question}</p>
-            <div class="options">
-                <label><input type="radio" name="q${index}" value="A" ${userAnswers[index] === "A" ? "checked" : ""}> ${question.options.A}</label>
-                <label><input type="radio" name="q${index}" value="B" ${userAnswers[index] === "B" ? "checked" : ""}> ${question.options.B}</label>
-                <label><input type="radio" name="q${index}" value="C" ${userAnswers[index] === "C" ? "checked" : ""}> ${question.options.C}</label>
-                <label><input type="radio" name="q${index}" value="D" ${userAnswers[index] === "D" ? "checked" : ""}> ${question.options.D}</label>
-            </div>
-        </div>
-    `;
-
-    updateNavigation();
     
-    if (typeof MathJax !== "undefined" && MathJax.typesetPromise) {
-        MathJax.typesetPromise();
-    }
-
-    document.querySelectorAll(`input[name="q${index}"]`).forEach(input => {
-        input.addEventListener("change", function() {
-            userAnswers[index] = this.value; 
-            updateNavigation(); 
-        });
-    });
-}
-
-function renderNavigation() {
-    const navContainer = document.getElementById('questionNav');
-    navContainer.innerHTML = "";
-
-    allQuestions.forEach((_, index) => {
-        const navItem = document.createElement("div");
-        navItem.classList.add("nav-circle");
-        navItem.innerText = index + 1;
-
-        navItem.onclick = () => {
-            currentQuestionIndex = index;
-            renderQuestion(index);
-        };
-
-        navContainer.appendChild(navItem);
-    });
-
-    updateNavigation();
-}
-
-function updateNavigation() {
-    const navItems = document.querySelectorAll(".nav-circle");
-    
-    navItems.forEach((item, index) => {
-        if (index === currentQuestionIndex) {
-            item.style.background = "#2575fc"; 
-            item.style.color = "#fff";
-        } else if (userAnswers[index]) {
-            item.style.background = "#28a745"; 
-            item.style.color = "#fff";
-        } else {
-            item.style.background = "#ddd"; 
-            item.style.color = "#333";
-        }
-    });
-}
-
-function prevQuestion() {
-    if (currentQuestionIndex > 0) {
-        currentQuestionIndex--;
-        renderQuestion(currentQuestionIndex);
-    }
-    updateButtons();
-}
-
-function nextQuestion() {
-    if (currentQuestionIndex < allQuestions.length - 1) {
-        currentQuestionIndex++;
-        renderQuestion(currentQuestionIndex);
-    }
-    updateButtons();
-}
-
-function updateButtons() {
-    document.getElementById('prevBtn').disabled = currentQuestionIndex === 0;
-    document.getElementById('nextBtn').disabled = currentQuestionIndex === allQuestions.length - 1;
-}
-        function calculateScore() {
-  let score = 0;
-  let subjectScores = {
-    Physics: 0,
-    Chemistry: 0,
-    Math: 0,
-    English: 0
-  };
-
-  allQuestions.forEach((question, index) => {
-    const selectedOption = userAnswers[index];
-
-    if (selectedOption) {
-      if (selectedOption === question.answer) {
-        score += 4;
-        subjectScores[question.subject] += 4;
-      } else {
-        score -= 1;
-        subjectScores[question.subject] -= 1;
-      }
-    }
-  });
-
-  let percentage = (score / (allQuestions.length * 4)) * 100;
-
-  document.getElementById('scoreDisplay').innerHTML = `
-    <p>Your Total Score: ${score} / ${allQuestions.length * 4} (${percentage.toFixed(2)}%)</p>
-    <p>Physics Score: ${subjectScores.Physics} / 120</p>
-    <p>Chemistry Score: ${subjectScores.Chemistry} / 120</p>
-    <p>Math Score: ${subjectScores.Math} / 120</p>
-    <p>English Score: ${subjectScores.English} / 40</p>
-  `;
-
-  document.querySelector('.submit-btn').disabled = true;
-
-  // Save score to Firebase
-  saveScore(score, subjectScores);
-}
-       
-function updateTimer() {
-    const minutes = Math.floor(timeLeft / 60);
-    const seconds = timeLeft % 60;
-    document.getElementById('timer').innerText = `Time Left: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-
-    if (timeLeft > 0) {
-        timeLeft--;
-        setTimeout(updateTimer, 1000);
-    } else {
-        document.querySelector('.submit-btn').disabled = true;
-        calculateScore();
-        alert("Time's up! Your test has been submitted.");
-    }
-}
-
-window.onload = () => {
-    selectRandomQuestions();
-    renderQuestion(currentQuestionIndex);
-    renderNavigation();
-    updateTimer();
-    updateButtons();
-};
-
-
-    </script>
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-import { getFirestore, collection, addDoc, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
-// Firebase Configuration
-const firebaseConfig = {
-  apiKey: "AIzaSyDjbEkfu8fJmPTDQ8xksGehPday9lrcSrg",
-  authDomain: "abdullah-bb8ab.firebaseapp.com",
-  projectId: "abdullah-bb8ab",
-  storageBucket: "abdullah-bb8ab.appspot.com",
-  messagingSenderId: "286504008164",
-  appId: "1:286504008164:web:8642bc9d56f36393052ff1"
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-
-// Check if user is logged in
-onAuthStateChanged(auth, (user) => {
-  if (!user) {
-    window.location.href = "login.html"; // Redirect to login page if not logged in
-  }
-});
-async function saveScore(score, subjectScores) {
-  const user = auth.currentUser;
-  if (user) {
-    const scoreData = {
-      userId: user.uid,
-      email: user.email,
-      totalScore: score,
-      physicsScore: subjectScores.Physics,
-      chemistryScore: subjectScores.Chemistry,
-      mathScore: subjectScores.Math,
-      englishScore: subjectScores.English,
-      timestamp: new Date()
-    };
-
-    try {
-      await addDoc(collection(db, "scores"), scoreData);
-      console.log("Score saved successfully!");
-    } catch (error) {
-      console.error("Error saving score: ", error);
-    }
-  }
-}
-async function viewPreviousScores() {
-  const user = auth.currentUser;
-  if (user) {
-    const scoresQuery = query(collection(db, "scores"), where("userId", "==", user.uid));
-    const querySnapshot = await getDocs(scoresQuery);
-
-    let scoresHTML = "<h3>Your Previous Scores:</h3>";
-    querySnapshot.forEach((doc) => {
-      const data = doc.data();
-      scoresHTML += `
-        <div class="score-item">
-          <p>Date: ${data.timestamp.toDate().toLocaleString()}</p>
-          <p>Total Score: ${data.totalScore}</p>
-          <p>Physics: ${data.physicsScore}, Chemistry: ${data.chemistryScore}, Math: ${data.mathScore}, English: ${data.englishScore}</p>
-        </div>
-      `;
-    });
-       document.getElementById('viewScoresBtn').addEventListener('click', viewPreviousScores);
-
-    document.getElementById('previousScores').innerHTML = scoresHTML;
-      
-  }
-}
-    </script>
+    <!-- Main application script -->
+    <script src="app.js" type="module"></script>
 </body>
 </html>
